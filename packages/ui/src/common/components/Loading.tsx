@@ -8,12 +8,13 @@ import { TextInlineSmall } from './typography'
 interface Props {
   text?: string
   withoutMargin?: boolean
+  className?: string
 }
 
-export const Loading = ({ text, withoutMargin }: Props) => {
+export const Loading = ({ text, withoutMargin, className }: Props) => {
   return (
     <LoadingWrapper withoutMargin={withoutMargin}>
-      <Loader />
+      <Loader className={className} />
       {text && (
         <TextInlineSmall italic inter lighter>
           {text}
@@ -28,6 +29,7 @@ const LoadingWrapper = styled.div<Props>`
   width: fit-content;
   height: fit-content;
   align-items: center;
+  justify-content: center;
   column-gap: 8px;
   justify-self: start;
   place-self: center;

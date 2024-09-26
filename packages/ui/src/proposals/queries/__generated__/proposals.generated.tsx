@@ -23,6 +23,7 @@ export type WorkerProposalDetailsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -30,6 +31,7 @@ export type WorkerProposalDetailsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -66,12 +68,14 @@ export type ProposalFieldsFragment = {
     | { __typename: 'AmendConstitutionProposalDetails' }
     | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
     | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+    | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
     | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
     | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
     | { __typename: 'FundingRequestProposalDetails' }
     | { __typename: 'RuntimeUpgradeProposalDetails' }
     | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
     | { __typename: 'SetCouncilorRewardProposalDetails' }
+    | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
     | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
     | { __typename: 'SetInitialInvitationCountProposalDetails' }
     | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -82,6 +86,11 @@ export type ProposalFieldsFragment = {
     | { __typename: 'SignalProposalDetails' }
     | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
     | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+    | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+    | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+    | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+    | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+    | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
     | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
     | { __typename: 'VetoProposalDetails' }
   creator: {
@@ -100,6 +109,7 @@ export type ProposalFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -107,6 +117,7 @@ export type ProposalFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -140,6 +151,7 @@ export type VoteFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -147,6 +159,7 @@ export type VoteFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -185,6 +198,7 @@ export type VoteWithDetailsFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -192,6 +206,7 @@ export type VoteWithDetailsFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -236,6 +251,7 @@ export type ProposalWithDetailsFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -243,6 +259,7 @@ export type ProposalWithDetailsFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -284,6 +301,7 @@ export type ProposalWithDetailsFieldsFragment = {
         metadata?: { __typename: 'WorkingGroupOpeningMetadata'; description?: string | null } | null
         group?: { __typename: 'WorkingGroup'; id: string; name: string } | null
       }
+    | { __typename: 'DecreaseCouncilBudgetProposalDetails'; amount: string }
     | {
         __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails'
         amount: string
@@ -307,6 +325,7 @@ export type ProposalWithDetailsFieldsFragment = {
               __typename: 'MemberMetadata'
               name?: string | null
               about?: string | null
+              isVerifiedValidator?: boolean | null
               avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
             }
             roles: Array<{
@@ -314,6 +333,7 @@ export type ProposalWithDetailsFieldsFragment = {
               id: string
               createdAt: any
               isLead: boolean
+              isActive: boolean
               group: { __typename: 'WorkingGroup'; name: string }
             }>
             stakingaccountaddedeventmember?: Array<{
@@ -351,6 +371,7 @@ export type ProposalWithDetailsFieldsFragment = {
               __typename: 'MemberMetadata'
               name?: string | null
               about?: string | null
+              isVerifiedValidator?: boolean | null
               avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
             }
             roles: Array<{
@@ -358,6 +379,7 @@ export type ProposalWithDetailsFieldsFragment = {
               id: string
               createdAt: any
               isLead: boolean
+              isActive: boolean
               group: { __typename: 'WorkingGroup'; name: string }
             }>
             stakingaccountaddedeventmember?: Array<{
@@ -383,6 +405,7 @@ export type ProposalWithDetailsFieldsFragment = {
       }
     | { __typename: 'SetCouncilBudgetIncrementProposalDetails'; newAmount: string }
     | { __typename: 'SetCouncilorRewardProposalDetails'; newRewardPerBlock: string }
+    | { __typename: 'SetEraPayoutDampingFactorProposalDetails'; dampingFactor: number }
     | { __typename: 'SetInitialInvitationBalanceProposalDetails'; newInitialInvitationBalance: string }
     | { __typename: 'SetInitialInvitationCountProposalDetails'; newInitialInvitationsCount: number }
     | { __typename: 'SetMaxValidatorCountProposalDetails'; newMaxValidatorCount: number }
@@ -411,6 +434,7 @@ export type ProposalWithDetailsFieldsFragment = {
               __typename: 'MemberMetadata'
               name?: string | null
               about?: string | null
+              isVerifiedValidator?: boolean | null
               avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
             }
             roles: Array<{
@@ -418,6 +442,7 @@ export type ProposalWithDetailsFieldsFragment = {
               id: string
               createdAt: any
               isLead: boolean
+              isActive: boolean
               group: { __typename: 'WorkingGroup'; name: string }
             }>
             stakingaccountaddedeventmember?: Array<{
@@ -454,6 +479,7 @@ export type ProposalWithDetailsFieldsFragment = {
               __typename: 'MemberMetadata'
               name?: string | null
               about?: string | null
+              isVerifiedValidator?: boolean | null
               avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
             }
             roles: Array<{
@@ -461,6 +487,7 @@ export type ProposalWithDetailsFieldsFragment = {
               id: string
               createdAt: any
               isLead: boolean
+              isActive: boolean
               group: { __typename: 'WorkingGroup'; name: string }
             }>
             stakingaccountaddedeventmember?: Array<{
@@ -495,6 +522,7 @@ export type ProposalWithDetailsFieldsFragment = {
               __typename: 'MemberMetadata'
               name?: string | null
               about?: string | null
+              isVerifiedValidator?: boolean | null
               avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
             }
             roles: Array<{
@@ -502,6 +530,7 @@ export type ProposalWithDetailsFieldsFragment = {
               id: string
               createdAt: any
               isLead: boolean
+              isActive: boolean
               group: { __typename: 'WorkingGroup'; name: string }
             }>
             stakingaccountaddedeventmember?: Array<{
@@ -513,6 +542,35 @@ export type ProposalWithDetailsFieldsFragment = {
             }> | null
           }
         } | null
+      }
+    | {
+        __typename: 'UpdateArgoBridgeConstraintsProposalDetails'
+        operatorAccount?: string | null
+        pauserAccounts?: Array<string> | null
+        bridgingFee?: string | null
+        thawnDuration?: number | null
+        remoteChains?: Array<number> | null
+      }
+    | {
+        __typename: 'UpdateChannelPayoutsProposalDetails'
+        channelCashoutsEnabled?: boolean | null
+        minCashoutAllowed?: string | null
+        maxCashoutAllowed?: string | null
+        payloadHash?: string | null
+      }
+    | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+    | { __typename: 'UpdatePalletFrozenStatusProposalDetails'; frozen: boolean; pallet: string }
+    | {
+        __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails'
+        maxYearlyRate?: number | null
+        minAmmSlope?: string | null
+        minSaleDuration?: number | null
+        minRevenueSplitDuration?: number | null
+        minRevenueSplitTimeToStart?: number | null
+        salePlatformFee?: number | null
+        ammBuyTxFees?: number | null
+        ammSellTxFees?: number | null
+        bloatBond?: string | null
       }
     | {
         __typename: 'UpdateWorkingGroupBudgetProposalDetails'
@@ -557,6 +615,7 @@ export type ProposalWithDetailsFieldsFragment = {
             __typename: 'MemberMetadata'
             name?: string | null
             about?: string | null
+            isVerifiedValidator?: boolean | null
             avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
           }
           roles: Array<{
@@ -564,6 +623,7 @@ export type ProposalWithDetailsFieldsFragment = {
             id: string
             createdAt: any
             isLead: boolean
+            isActive: boolean
             group: { __typename: 'WorkingGroup'; name: string }
           }>
           stakingaccountaddedeventmember?: Array<{
@@ -602,6 +662,7 @@ export type ProposalWithDetailsFieldsFragment = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -609,6 +670,7 @@ export type ProposalWithDetailsFieldsFragment = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -663,6 +725,7 @@ export type ProposalWithDetailsFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -670,6 +733,7 @@ export type ProposalWithDetailsFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -716,6 +780,7 @@ export type DiscussionPostFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -723,6 +788,7 @@ export type DiscussionPostFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -761,6 +827,7 @@ export type DiscussionPostFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -768,6 +835,7 @@ export type DiscussionPostFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -813,6 +881,7 @@ export type DiscussionPostWithoutReplyFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -820,6 +889,7 @@ export type DiscussionPostWithoutReplyFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -853,12 +923,14 @@ export type ProposalMentionFieldsFragment = {
     | { __typename: 'AmendConstitutionProposalDetails' }
     | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
     | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+    | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
     | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
     | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
     | { __typename: 'FundingRequestProposalDetails' }
     | { __typename: 'RuntimeUpgradeProposalDetails' }
     | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
     | { __typename: 'SetCouncilorRewardProposalDetails' }
+    | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
     | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
     | { __typename: 'SetInitialInvitationCountProposalDetails' }
     | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -869,6 +941,11 @@ export type ProposalMentionFieldsFragment = {
     | { __typename: 'SignalProposalDetails' }
     | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
     | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+    | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+    | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+    | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+    | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+    | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
     | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
     | { __typename: 'VetoProposalDetails' }
   status:
@@ -906,6 +983,7 @@ export type ProposalDiscussionPostMentionFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -913,6 +991,7 @@ export type ProposalDiscussionPostMentionFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -958,12 +1037,14 @@ export type GetProposalsQuery = {
       | { __typename: 'AmendConstitutionProposalDetails' }
       | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
       | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
       | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'FundingRequestProposalDetails' }
       | { __typename: 'RuntimeUpgradeProposalDetails' }
       | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
       | { __typename: 'SetCouncilorRewardProposalDetails' }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
       | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
       | { __typename: 'SetInitialInvitationCountProposalDetails' }
       | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -974,6 +1055,11 @@ export type GetProposalsQuery = {
       | { __typename: 'SignalProposalDetails' }
       | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
       | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+      | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+      | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+      | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
       | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
       | { __typename: 'VetoProposalDetails' }
     creator: {
@@ -992,6 +1078,7 @@ export type GetProposalsQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -999,6 +1086,7 @@ export type GetProposalsQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -1059,6 +1147,7 @@ export type GetProposalQuery = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -1066,6 +1155,7 @@ export type GetProposalQuery = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -1107,6 +1197,7 @@ export type GetProposalQuery = {
           metadata?: { __typename: 'WorkingGroupOpeningMetadata'; description?: string | null } | null
           group?: { __typename: 'WorkingGroup'; id: string; name: string } | null
         }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails'; amount: string }
       | {
           __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails'
           amount: string
@@ -1130,6 +1221,7 @@ export type GetProposalQuery = {
                 __typename: 'MemberMetadata'
                 name?: string | null
                 about?: string | null
+                isVerifiedValidator?: boolean | null
                 avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
               }
               roles: Array<{
@@ -1137,6 +1229,7 @@ export type GetProposalQuery = {
                 id: string
                 createdAt: any
                 isLead: boolean
+                isActive: boolean
                 group: { __typename: 'WorkingGroup'; name: string }
               }>
               stakingaccountaddedeventmember?: Array<{
@@ -1174,6 +1267,7 @@ export type GetProposalQuery = {
                 __typename: 'MemberMetadata'
                 name?: string | null
                 about?: string | null
+                isVerifiedValidator?: boolean | null
                 avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
               }
               roles: Array<{
@@ -1181,6 +1275,7 @@ export type GetProposalQuery = {
                 id: string
                 createdAt: any
                 isLead: boolean
+                isActive: boolean
                 group: { __typename: 'WorkingGroup'; name: string }
               }>
               stakingaccountaddedeventmember?: Array<{
@@ -1206,6 +1301,7 @@ export type GetProposalQuery = {
         }
       | { __typename: 'SetCouncilBudgetIncrementProposalDetails'; newAmount: string }
       | { __typename: 'SetCouncilorRewardProposalDetails'; newRewardPerBlock: string }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails'; dampingFactor: number }
       | { __typename: 'SetInitialInvitationBalanceProposalDetails'; newInitialInvitationBalance: string }
       | { __typename: 'SetInitialInvitationCountProposalDetails'; newInitialInvitationsCount: number }
       | { __typename: 'SetMaxValidatorCountProposalDetails'; newMaxValidatorCount: number }
@@ -1234,6 +1330,7 @@ export type GetProposalQuery = {
                 __typename: 'MemberMetadata'
                 name?: string | null
                 about?: string | null
+                isVerifiedValidator?: boolean | null
                 avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
               }
               roles: Array<{
@@ -1241,6 +1338,7 @@ export type GetProposalQuery = {
                 id: string
                 createdAt: any
                 isLead: boolean
+                isActive: boolean
                 group: { __typename: 'WorkingGroup'; name: string }
               }>
               stakingaccountaddedeventmember?: Array<{
@@ -1277,6 +1375,7 @@ export type GetProposalQuery = {
                 __typename: 'MemberMetadata'
                 name?: string | null
                 about?: string | null
+                isVerifiedValidator?: boolean | null
                 avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
               }
               roles: Array<{
@@ -1284,6 +1383,7 @@ export type GetProposalQuery = {
                 id: string
                 createdAt: any
                 isLead: boolean
+                isActive: boolean
                 group: { __typename: 'WorkingGroup'; name: string }
               }>
               stakingaccountaddedeventmember?: Array<{
@@ -1318,6 +1418,7 @@ export type GetProposalQuery = {
                 __typename: 'MemberMetadata'
                 name?: string | null
                 about?: string | null
+                isVerifiedValidator?: boolean | null
                 avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
               }
               roles: Array<{
@@ -1325,6 +1426,7 @@ export type GetProposalQuery = {
                 id: string
                 createdAt: any
                 isLead: boolean
+                isActive: boolean
                 group: { __typename: 'WorkingGroup'; name: string }
               }>
               stakingaccountaddedeventmember?: Array<{
@@ -1336,6 +1438,35 @@ export type GetProposalQuery = {
               }> | null
             }
           } | null
+        }
+      | {
+          __typename: 'UpdateArgoBridgeConstraintsProposalDetails'
+          operatorAccount?: string | null
+          pauserAccounts?: Array<string> | null
+          bridgingFee?: string | null
+          thawnDuration?: number | null
+          remoteChains?: Array<number> | null
+        }
+      | {
+          __typename: 'UpdateChannelPayoutsProposalDetails'
+          channelCashoutsEnabled?: boolean | null
+          minCashoutAllowed?: string | null
+          maxCashoutAllowed?: string | null
+          payloadHash?: string | null
+        }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails'; frozen: boolean; pallet: string }
+      | {
+          __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails'
+          maxYearlyRate?: number | null
+          minAmmSlope?: string | null
+          minSaleDuration?: number | null
+          minRevenueSplitDuration?: number | null
+          minRevenueSplitTimeToStart?: number | null
+          salePlatformFee?: number | null
+          ammBuyTxFees?: number | null
+          ammSellTxFees?: number | null
+          bloatBond?: string | null
         }
       | {
           __typename: 'UpdateWorkingGroupBudgetProposalDetails'
@@ -1380,6 +1511,7 @@ export type GetProposalQuery = {
               __typename: 'MemberMetadata'
               name?: string | null
               about?: string | null
+              isVerifiedValidator?: boolean | null
               avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
             }
             roles: Array<{
@@ -1387,6 +1519,7 @@ export type GetProposalQuery = {
               id: string
               createdAt: any
               isLead: boolean
+              isActive: boolean
               group: { __typename: 'WorkingGroup'; name: string }
             }>
             stakingaccountaddedeventmember?: Array<{
@@ -1425,6 +1558,7 @@ export type GetProposalQuery = {
             __typename: 'MemberMetadata'
             name?: string | null
             about?: string | null
+            isVerifiedValidator?: boolean | null
             avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
           }
           roles: Array<{
@@ -1432,6 +1566,7 @@ export type GetProposalQuery = {
             id: string
             createdAt: any
             isLead: boolean
+            isActive: boolean
             group: { __typename: 'WorkingGroup'; name: string }
           }>
           stakingaccountaddedeventmember?: Array<{
@@ -1486,6 +1621,7 @@ export type GetProposalQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -1493,6 +1629,7 @@ export type GetProposalQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -1563,6 +1700,7 @@ export type GetVoteWithDetailsQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -1570,6 +1708,7 @@ export type GetVoteWithDetailsQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -1629,6 +1768,7 @@ export type GetProposalVotesQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -1636,6 +1776,7 @@ export type GetProposalVotesQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -1669,12 +1810,14 @@ export type GetProposalMentionQuery = {
       | { __typename: 'AmendConstitutionProposalDetails' }
       | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
       | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
       | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'FundingRequestProposalDetails' }
       | { __typename: 'RuntimeUpgradeProposalDetails' }
       | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
       | { __typename: 'SetCouncilorRewardProposalDetails' }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
       | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
       | { __typename: 'SetInitialInvitationCountProposalDetails' }
       | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -1685,6 +1828,11 @@ export type GetProposalMentionQuery = {
       | { __typename: 'SignalProposalDetails' }
       | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
       | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+      | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+      | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+      | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
       | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
       | { __typename: 'VetoProposalDetails' }
     status:
@@ -1729,6 +1877,7 @@ export type GetProposalDiscussionPostMentionQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -1736,6 +1885,7 @@ export type GetProposalDiscussionPostMentionQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -1779,12 +1929,14 @@ export type GetLatestProposalByMemberIdQuery = {
       | { __typename: 'AmendConstitutionProposalDetails' }
       | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
       | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
       | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'FundingRequestProposalDetails' }
       | { __typename: 'RuntimeUpgradeProposalDetails' }
       | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
       | { __typename: 'SetCouncilorRewardProposalDetails' }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
       | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
       | { __typename: 'SetInitialInvitationCountProposalDetails' }
       | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -1795,9 +1947,24 @@ export type GetLatestProposalByMemberIdQuery = {
       | { __typename: 'SignalProposalDetails' }
       | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
       | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+      | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+      | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+      | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
       | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
       | { __typename: 'VetoProposalDetails' }
   }>
+}
+
+export type GetPayloadDataObjectIdQueryVariables = Types.Exact<{
+  inBlock?: Types.InputMaybe<Types.Scalars['Int']>
+  payloadHash?: Types.InputMaybe<Types.Scalars['String']>
+}>
+
+export type GetPayloadDataObjectIdQuery = {
+  __typename: 'Query'
+  channelPayoutsUpdatedEvents: Array<{ __typename: 'ChannelPayoutsUpdatedEvent'; payloadDataObjectId?: string | null }>
 }
 
 export const VoteFieldsFragmentDoc = gql`
@@ -2026,6 +2193,40 @@ export const ProposalWithDetailsFieldsFragmentDoc = gql`
           id
           title
         }
+      }
+      ... on UpdateChannelPayoutsProposalDetails {
+        channelCashoutsEnabled
+        minCashoutAllowed
+        maxCashoutAllowed
+        payloadHash
+      }
+      ... on UpdatePalletFrozenStatusProposalDetails {
+        frozen
+        pallet
+      }
+      ... on SetEraPayoutDampingFactorProposalDetails {
+        dampingFactor
+      }
+      ... on DecreaseCouncilBudgetProposalDetails {
+        amount
+      }
+      ... on UpdateTokenPalletTokenConstraintsProposalDetails {
+        maxYearlyRate
+        minAmmSlope
+        minSaleDuration
+        minRevenueSplitDuration
+        minRevenueSplitTimeToStart
+        salePlatformFee
+        ammBuyTxFees
+        ammSellTxFees
+        bloatBond
+      }
+      ... on UpdateArgoBridgeConstraintsProposalDetails {
+        operatorAccount
+        pauserAccounts
+        bridgingFee
+        thawnDuration
+        remoteChains
       }
     }
     discussionThread {
@@ -2671,4 +2872,53 @@ export type GetLatestProposalByMemberIdLazyQueryHookResult = ReturnType<typeof u
 export type GetLatestProposalByMemberIdQueryResult = Apollo.QueryResult<
   GetLatestProposalByMemberIdQuery,
   GetLatestProposalByMemberIdQueryVariables
+>
+export const GetPayloadDataObjectIdDocument = gql`
+  query GetPayloadDataObjectId($inBlock: Int, $payloadHash: String) {
+    channelPayoutsUpdatedEvents(where: { inBlock_eq: $inBlock, payloadHash_eq: $payloadHash }, limit: 1) {
+      payloadDataObjectId
+    }
+  }
+`
+
+/**
+ * __useGetPayloadDataObjectIdQuery__
+ *
+ * To run a query within a React component, call `useGetPayloadDataObjectIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPayloadDataObjectIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPayloadDataObjectIdQuery({
+ *   variables: {
+ *      inBlock: // value for 'inBlock'
+ *      payloadHash: // value for 'payloadHash'
+ *   },
+ * });
+ */
+export function useGetPayloadDataObjectIdQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetPayloadDataObjectIdQuery, GetPayloadDataObjectIdQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useQuery<GetPayloadDataObjectIdQuery, GetPayloadDataObjectIdQueryVariables>(
+    GetPayloadDataObjectIdDocument,
+    options
+  )
+}
+export function useGetPayloadDataObjectIdLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetPayloadDataObjectIdQuery, GetPayloadDataObjectIdQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions }
+  return Apollo.useLazyQuery<GetPayloadDataObjectIdQuery, GetPayloadDataObjectIdQueryVariables>(
+    GetPayloadDataObjectIdDocument,
+    options
+  )
+}
+export type GetPayloadDataObjectIdQueryHookResult = ReturnType<typeof useGetPayloadDataObjectIdQuery>
+export type GetPayloadDataObjectIdLazyQueryHookResult = ReturnType<typeof useGetPayloadDataObjectIdLazyQuery>
+export type GetPayloadDataObjectIdQueryResult = Apollo.QueryResult<
+  GetPayloadDataObjectIdQuery,
+  GetPayloadDataObjectIdQueryVariables
 >

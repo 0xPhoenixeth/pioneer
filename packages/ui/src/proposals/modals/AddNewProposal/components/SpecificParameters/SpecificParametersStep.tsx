@@ -13,6 +13,7 @@ import { SetWorkingGroupLeadReward } from '@/proposals/modals/AddNewProposal/com
 import { Signal } from '@/proposals/modals/AddNewProposal/components/SpecificParameters/Signal'
 import { SlashWorkingGroupLead } from '@/proposals/modals/AddNewProposal/components/SpecificParameters/SlashWorkingGroupLead'
 import { TerminateWorkingGroupLead } from '@/proposals/modals/AddNewProposal/components/SpecificParameters/TerminateWorkingGroupLead'
+import { UpdateChannelPayouts } from '@/proposals/modals/AddNewProposal/components/SpecificParameters/UpdateChannelPayouts/UpdateChannelPayouts'
 import { UpdateWorkingGroupBudget } from '@/proposals/modals/AddNewProposal/components/SpecificParameters/UpdateWorkingGroupBudget'
 import { CancelWorkingGroupLeadOpening } from '@/proposals/modals/AddNewProposal/components/SpecificParameters/WorkingGroupLeadOpening/CancelWorkingGroupLeadOpening'
 import {
@@ -24,8 +25,13 @@ import {
 import { FillWorkingGroupLeadOpening } from '@/proposals/modals/AddNewProposal/components/SpecificParameters/WorkingGroupLeadOpening/FillWorkingGroupLeadOpening'
 import { AddNewProposalMachineState } from '@/proposals/modals/AddNewProposal/machine'
 
+import { DecreaseCouncilBudget } from './DecreaseCouncilBudget'
+import { SetEraPayoutDampingFactor } from './SetEraPayoutDampingFactor'
 import { SetInitialInvitationBalance } from './SetInitialInvitationBalance'
 import { SetInitialInvitationCount } from './SetInitialInvitationCount'
+import { UpdateArgoBridgeConstraints } from './UpdateArgoBridgeConstraints'
+import { UpdatePalletFrozenStatus } from './UpdatePalletFrozenStatus'
+import { UpdateTokenPalletTokenConstraints } from './UpdateTokenPalletTokenConstraints'
 
 interface SpecificParametersStepProps {
   matches: AddNewProposalMachineState['matches']
@@ -77,6 +83,24 @@ export const SpecificParametersStep = ({ matches }: SpecificParametersStepProps)
       return <SetMaxValidatorCount />
     case matches('specificParameters.setMembershipPrice'): {
       return <SetMembershipPrice />
+    }
+    case matches('specificParameters.updateChannelPayouts'): {
+      return <UpdateChannelPayouts />
+    }
+    case matches('specificParameters.updatePalletFrozenStatus'): {
+      return <UpdatePalletFrozenStatus />
+    }
+    case matches('specificParameters.setEraPayoutDampingFactor'): {
+      return <SetEraPayoutDampingFactor />
+    }
+    case matches('specificParameters.decreaseCouncilBudget'): {
+      return <DecreaseCouncilBudget />
+    }
+    case matches('specificParameters.updateTokenPalletTokenConstraints'): {
+      return <UpdateTokenPalletTokenConstraints />
+    }
+    case matches('specificParameters.updateArgoBridgeConstraints'): {
+      return <UpdateArgoBridgeConstraints />
     }
     default:
       return null

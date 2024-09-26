@@ -184,7 +184,42 @@ fragment ProposalWithDetailsFields on Proposal {
         title
       }
     }
+    ... on UpdateChannelPayoutsProposalDetails {
+      channelCashoutsEnabled
+      minCashoutAllowed
+      maxCashoutAllowed
+      payloadHash
+    }
+    ... on UpdatePalletFrozenStatusProposalDetails {
+      frozen
+      pallet
+    }
+    ... on SetEraPayoutDampingFactorProposalDetails {
+      dampingFactor
+    }
+    ... on DecreaseCouncilBudgetProposalDetails {
+      amount
+    }
+    ... on UpdateTokenPalletTokenConstraintsProposalDetails {
+      maxYearlyRate
+      minAmmSlope
+      minSaleDuration
+      minRevenueSplitDuration
+      minRevenueSplitTimeToStart
+      salePlatformFee
+      ammBuyTxFees
+      ammSellTxFees
+      bloatBond
+    }
+    ... on UpdateArgoBridgeConstraintsProposalDetails {
+      operatorAccount
+      pauserAccounts
+      bridgingFee
+      thawnDuration
+      remoteChains
+    }
   }
+
   discussionThread {
     id
     posts {
@@ -351,5 +386,11 @@ query GetLatestProposalByMemberId($lockAccount: String) {
     statusSetAtBlock
     statusSetAtTime
     createdAt
+  }
+}
+
+query GetPayloadDataObjectId($inBlock: Int, $payloadHash: String) {
+  channelPayoutsUpdatedEvents(where: { inBlock_eq: $inBlock, payloadHash_eq: $payloadHash }, limit: 1) {
+    payloadDataObjectId
   }
 }

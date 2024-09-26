@@ -27,6 +27,7 @@ export type CouncilMemberFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -34,6 +35,7 @@ export type CouncilMemberFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -74,12 +76,14 @@ export type PastCouncilProposalsFieldsFragment = {
       | { __typename: 'AmendConstitutionProposalDetails' }
       | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
       | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
       | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'FundingRequestProposalDetails' }
       | { __typename: 'RuntimeUpgradeProposalDetails' }
       | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
       | { __typename: 'SetCouncilorRewardProposalDetails' }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
       | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
       | { __typename: 'SetInitialInvitationCountProposalDetails' }
       | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -90,6 +94,11 @@ export type PastCouncilProposalsFieldsFragment = {
       | { __typename: 'SignalProposalDetails' }
       | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
       | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+      | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+      | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+      | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
       | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
       | { __typename: 'VetoProposalDetails' }
     creator: {
@@ -108,6 +117,7 @@ export type PastCouncilProposalsFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -115,6 +125,7 @@ export type PastCouncilProposalsFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -128,7 +139,12 @@ export type PastCouncilProposalsFieldsFragment = {
   }
 }
 
-export type PastCouncilWorkingGroupFieldsFragment = { __typename: 'WorkingGroup'; id: string; name: string }
+export type PastCouncilWorkingGroupFieldsFragment = {
+  __typename: 'WorkingGroup'
+  id: string
+  name: string
+  budget: string
+}
 
 export type PastCouncilBudgetSetEventFieldsFragment = {
   __typename: 'BudgetSetEvent'
@@ -147,6 +163,19 @@ export type PastCouncilNewMissedRewardLevelReachedEventFieldsFragment = {
   groupId: string
   workerId: string
   newMissedRewardAmount: string
+}
+
+export type PastCouncilBudgetUpdatedEventFieldsFragment = {
+  __typename: 'BudgetUpdatedEvent'
+  groupId: string
+  budgetChangeAmount: string
+}
+
+export type PastCouncilChannelPaymentMadeEventFieldsFragment = {
+  __typename: 'ChannelPaymentMadeEvent'
+  id: string
+  amount: string
+  payer: { __typename: 'Membership'; handle: string }
 }
 
 export type ElectedCouncilFieldsFragment = {
@@ -178,6 +207,7 @@ export type ElectedCouncilFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -185,6 +215,7 @@ export type ElectedCouncilFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -238,6 +269,7 @@ export type ElectionCandidateFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -245,6 +277,7 @@ export type ElectionCandidateFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -291,6 +324,7 @@ export type ElectionRoundFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -298,6 +332,7 @@ export type ElectionRoundFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -346,6 +381,7 @@ export type LatestElectionRoundFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -353,6 +389,7 @@ export type LatestElectionRoundFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -382,7 +419,7 @@ export type PastElectionRoundFieldsFragment = {
   endedAtTime?: any | null
   endedAtNetwork?: Types.Network | null
   candidates: Array<{ __typename: 'Candidate'; stake: string }>
-  castVotes: Array<{ __typename: 'CastVote'; voteForId?: string | null }>
+  castVotes: Array<{ __typename: 'CastVote'; voteForId?: string | null; stake: string }>
 }
 
 export type PastElectionRoundDetailedFieldsFragment = {
@@ -415,6 +452,7 @@ export type PastElectionRoundDetailedFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -422,6 +460,7 @@ export type PastElectionRoundDetailedFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -475,6 +514,7 @@ export type ElectionCandidateDetailedFieldsFragment = {
       __typename: 'MemberMetadata'
       name?: string | null
       about?: string | null
+      isVerifiedValidator?: boolean | null
       avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
     }
     roles: Array<{
@@ -482,6 +522,7 @@ export type ElectionCandidateDetailedFieldsFragment = {
       id: string
       createdAt: any
       isLead: boolean
+      isActive: boolean
       group: { __typename: 'WorkingGroup'; name: string }
     }>
     stakingaccountaddedeventmember?: Array<{
@@ -532,6 +573,7 @@ export type CastVoteFieldsFragment = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -539,6 +581,7 @@ export type CastVoteFieldsFragment = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -569,38 +612,42 @@ export type CouncilSpendingEventFieldsFragment = {
 }
 
 export type FundingRequestApprovedFragment = {
-  __typename: 'ProposalExecutedEvent'
-  proposal: {
-    __typename: 'Proposal'
-    details:
-      | { __typename: 'AmendConstitutionProposalDetails' }
-      | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
-      | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
-      | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
-      | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
-      | {
-          __typename: 'FundingRequestProposalDetails'
-          destinationsList?: {
-            __typename: 'FundingRequestDestinationsList'
-            destinations: Array<{ __typename: 'FundingRequestDestination'; amount: string; account: string }>
-          } | null
-        }
-      | { __typename: 'RuntimeUpgradeProposalDetails' }
-      | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
-      | { __typename: 'SetCouncilorRewardProposalDetails' }
-      | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
-      | { __typename: 'SetInitialInvitationCountProposalDetails' }
-      | { __typename: 'SetMaxValidatorCountProposalDetails' }
-      | { __typename: 'SetMembershipLeadInvitationQuotaProposalDetails' }
-      | { __typename: 'SetMembershipPriceProposalDetails' }
-      | { __typename: 'SetReferralCutProposalDetails' }
-      | { __typename: 'SetWorkingGroupLeadRewardProposalDetails' }
-      | { __typename: 'SignalProposalDetails' }
-      | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
-      | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
-      | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
-      | { __typename: 'VetoProposalDetails' }
-  }
+  __typename: 'Proposal'
+  details:
+    | { __typename: 'AmendConstitutionProposalDetails' }
+    | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
+    | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+    | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
+    | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
+    | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
+    | {
+        __typename: 'FundingRequestProposalDetails'
+        destinationsList?: {
+          __typename: 'FundingRequestDestinationsList'
+          destinations: Array<{ __typename: 'FundingRequestDestination'; amount: string; account: string }>
+        } | null
+      }
+    | { __typename: 'RuntimeUpgradeProposalDetails' }
+    | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
+    | { __typename: 'SetCouncilorRewardProposalDetails' }
+    | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
+    | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
+    | { __typename: 'SetInitialInvitationCountProposalDetails' }
+    | { __typename: 'SetMaxValidatorCountProposalDetails' }
+    | { __typename: 'SetMembershipLeadInvitationQuotaProposalDetails' }
+    | { __typename: 'SetMembershipPriceProposalDetails' }
+    | { __typename: 'SetReferralCutProposalDetails' }
+    | { __typename: 'SetWorkingGroupLeadRewardProposalDetails' }
+    | { __typename: 'SignalProposalDetails' }
+    | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
+    | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+    | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+    | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+    | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+    | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+    | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
+    | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
+    | { __typename: 'VetoProposalDetails' }
 }
 
 export type GetElectedCouncilQueryVariables = Types.Exact<{ [key: string]: never }>
@@ -636,6 +683,7 @@ export type GetElectedCouncilQuery = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -643,6 +691,7 @@ export type GetElectedCouncilQuery = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -716,38 +765,42 @@ export type GetPastCouncilQuery = {
     type?: Types.EventTypeOptions | null
   }>
   fundingRequestsApproved: Array<{
-    __typename: 'ProposalExecutedEvent'
-    proposal: {
-      __typename: 'Proposal'
-      details:
-        | { __typename: 'AmendConstitutionProposalDetails' }
-        | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
-        | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
-        | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
-        | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
-        | {
-            __typename: 'FundingRequestProposalDetails'
-            destinationsList?: {
-              __typename: 'FundingRequestDestinationsList'
-              destinations: Array<{ __typename: 'FundingRequestDestination'; amount: string; account: string }>
-            } | null
-          }
-        | { __typename: 'RuntimeUpgradeProposalDetails' }
-        | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
-        | { __typename: 'SetCouncilorRewardProposalDetails' }
-        | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
-        | { __typename: 'SetInitialInvitationCountProposalDetails' }
-        | { __typename: 'SetMaxValidatorCountProposalDetails' }
-        | { __typename: 'SetMembershipLeadInvitationQuotaProposalDetails' }
-        | { __typename: 'SetMembershipPriceProposalDetails' }
-        | { __typename: 'SetReferralCutProposalDetails' }
-        | { __typename: 'SetWorkingGroupLeadRewardProposalDetails' }
-        | { __typename: 'SignalProposalDetails' }
-        | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
-        | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
-        | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
-        | { __typename: 'VetoProposalDetails' }
-    }
+    __typename: 'Proposal'
+    details:
+      | { __typename: 'AmendConstitutionProposalDetails' }
+      | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
+      | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
+      | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
+      | {
+          __typename: 'FundingRequestProposalDetails'
+          destinationsList?: {
+            __typename: 'FundingRequestDestinationsList'
+            destinations: Array<{ __typename: 'FundingRequestDestination'; amount: string; account: string }>
+          } | null
+        }
+      | { __typename: 'RuntimeUpgradeProposalDetails' }
+      | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
+      | { __typename: 'SetCouncilorRewardProposalDetails' }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
+      | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
+      | { __typename: 'SetInitialInvitationCountProposalDetails' }
+      | { __typename: 'SetMaxValidatorCountProposalDetails' }
+      | { __typename: 'SetMembershipLeadInvitationQuotaProposalDetails' }
+      | { __typename: 'SetMembershipPriceProposalDetails' }
+      | { __typename: 'SetReferralCutProposalDetails' }
+      | { __typename: 'SetWorkingGroupLeadRewardProposalDetails' }
+      | { __typename: 'SignalProposalDetails' }
+      | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
+      | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+      | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+      | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+      | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
+      | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
+      | { __typename: 'VetoProposalDetails' }
   }>
 }
 
@@ -777,6 +830,7 @@ export type GetPastCouncilMembersQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -784,6 +838,7 @@ export type GetPastCouncilMembersQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -823,12 +878,14 @@ export type GetPastCouncilMembersQuery = {
         | { __typename: 'AmendConstitutionProposalDetails' }
         | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
         | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+        | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
         | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
         | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
         | { __typename: 'FundingRequestProposalDetails' }
         | { __typename: 'RuntimeUpgradeProposalDetails' }
         | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
         | { __typename: 'SetCouncilorRewardProposalDetails' }
+        | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
         | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
         | { __typename: 'SetInitialInvitationCountProposalDetails' }
         | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -839,6 +896,11 @@ export type GetPastCouncilMembersQuery = {
         | { __typename: 'SignalProposalDetails' }
         | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
         | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+        | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+        | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+        | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+        | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+        | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
         | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
         | { __typename: 'VetoProposalDetails' }
       creator: {
@@ -857,6 +919,7 @@ export type GetPastCouncilMembersQuery = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -864,6 +927,7 @@ export type GetPastCouncilMembersQuery = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -909,12 +973,14 @@ export type GetPastCouncilProposalsQuery = {
       | { __typename: 'AmendConstitutionProposalDetails' }
       | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
       | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
       | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
       | { __typename: 'FundingRequestProposalDetails' }
       | { __typename: 'RuntimeUpgradeProposalDetails' }
       | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
       | { __typename: 'SetCouncilorRewardProposalDetails' }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
       | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
       | { __typename: 'SetInitialInvitationCountProposalDetails' }
       | { __typename: 'SetMaxValidatorCountProposalDetails' }
@@ -925,6 +991,11 @@ export type GetPastCouncilProposalsQuery = {
       | { __typename: 'SignalProposalDetails' }
       | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
       | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+      | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+      | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+      | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
       | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
       | { __typename: 'VetoProposalDetails' }
     creator: {
@@ -943,6 +1014,7 @@ export type GetPastCouncilProposalsQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -950,6 +1022,7 @@ export type GetPastCouncilProposalsQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -970,14 +1043,20 @@ export type GetPastCouncilWorkingGroupsQueryVariables = Types.Exact<{
 
 export type GetPastCouncilWorkingGroupsQuery = {
   __typename: 'Query'
-  workingGroups: Array<{ __typename: 'WorkingGroup'; id: string; name: string }>
-  budgetSetEvents: Array<{ __typename: 'BudgetSetEvent'; newBudget: string; groupId: string }>
+  workingGroups: Array<{ __typename: 'WorkingGroup'; id: string; name: string; budget: string }>
   rewardPaidEvents: Array<{ __typename: 'RewardPaidEvent'; groupId: string; amount: string }>
   newMissedRewardLevelReachedEvents: Array<{
     __typename: 'NewMissedRewardLevelReachedEvent'
     groupId: string
     workerId: string
     newMissedRewardAmount: string
+  }>
+  budgetUpdatedEvents: Array<{ __typename: 'BudgetUpdatedEvent'; groupId: string; budgetChangeAmount: string }>
+  channelPaymentMadeEvents: Array<{
+    __typename: 'ChannelPaymentMadeEvent'
+    id: string
+    amount: string
+    payer: { __typename: 'Membership'; handle: string }
   }>
 }
 
@@ -1011,6 +1090,7 @@ export type GetCurrentElectionQuery = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -1018,6 +1098,7 @@ export type GetCurrentElectionQuery = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -1071,6 +1152,7 @@ export type GetLatestElectionQuery = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -1078,6 +1160,7 @@ export type GetLatestElectionQuery = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -1116,7 +1199,7 @@ export type GetPastElectionsQuery = {
     endedAtTime?: any | null
     endedAtNetwork?: Types.Network | null
     candidates: Array<{ __typename: 'Candidate'; stake: string }>
-    castVotes: Array<{ __typename: 'CastVote'; voteForId?: string | null }>
+    castVotes: Array<{ __typename: 'CastVote'; voteForId?: string | null; stake: string }>
   }>
 }
 
@@ -1163,6 +1246,7 @@ export type GetPastElectionQuery = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -1170,6 +1254,7 @@ export type GetPastElectionQuery = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -1230,6 +1315,7 @@ export type GetCandidateQuery = {
         __typename: 'MemberMetadata'
         name?: string | null
         about?: string | null
+        isVerifiedValidator?: boolean | null
         avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
       }
       roles: Array<{
@@ -1237,6 +1323,7 @@ export type GetCandidateQuery = {
         id: string
         createdAt: any
         isLead: boolean
+        isActive: boolean
         group: { __typename: 'WorkingGroup'; name: string }
       }>
       stakingaccountaddedeventmember?: Array<{
@@ -1326,6 +1413,7 @@ export type GetCouncilVotesQuery = {
           __typename: 'MemberMetadata'
           name?: string | null
           about?: string | null
+          isVerifiedValidator?: boolean | null
           avatar?: { __typename: 'AvatarObject' } | { __typename: 'AvatarUri'; avatarUri: string } | null
         }
         roles: Array<{
@@ -1333,6 +1421,7 @@ export type GetCouncilVotesQuery = {
           id: string
           createdAt: any
           isLead: boolean
+          isActive: boolean
           group: { __typename: 'WorkingGroup'; name: string }
         }>
         stakingaccountaddedeventmember?: Array<{
@@ -1419,38 +1508,42 @@ export type GetPastCouncilStatsQuery = {
   __typename: 'Query'
   proposalsApproved: { __typename: 'ProposalExecutedEventConnection'; totalCount: number }
   fundingRequestsApproved: Array<{
-    __typename: 'ProposalExecutedEvent'
-    proposal: {
-      __typename: 'Proposal'
-      details:
-        | { __typename: 'AmendConstitutionProposalDetails' }
-        | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
-        | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
-        | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
-        | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
-        | {
-            __typename: 'FundingRequestProposalDetails'
-            destinationsList?: {
-              __typename: 'FundingRequestDestinationsList'
-              destinations: Array<{ __typename: 'FundingRequestDestination'; amount: string; account: string }>
-            } | null
-          }
-        | { __typename: 'RuntimeUpgradeProposalDetails' }
-        | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
-        | { __typename: 'SetCouncilorRewardProposalDetails' }
-        | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
-        | { __typename: 'SetInitialInvitationCountProposalDetails' }
-        | { __typename: 'SetMaxValidatorCountProposalDetails' }
-        | { __typename: 'SetMembershipLeadInvitationQuotaProposalDetails' }
-        | { __typename: 'SetMembershipPriceProposalDetails' }
-        | { __typename: 'SetReferralCutProposalDetails' }
-        | { __typename: 'SetWorkingGroupLeadRewardProposalDetails' }
-        | { __typename: 'SignalProposalDetails' }
-        | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
-        | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
-        | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
-        | { __typename: 'VetoProposalDetails' }
-    }
+    __typename: 'Proposal'
+    details:
+      | { __typename: 'AmendConstitutionProposalDetails' }
+      | { __typename: 'CancelWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'CreateWorkingGroupLeadOpeningProposalDetails' }
+      | { __typename: 'DecreaseCouncilBudgetProposalDetails' }
+      | { __typename: 'DecreaseWorkingGroupLeadStakeProposalDetails' }
+      | { __typename: 'FillWorkingGroupLeadOpeningProposalDetails' }
+      | {
+          __typename: 'FundingRequestProposalDetails'
+          destinationsList?: {
+            __typename: 'FundingRequestDestinationsList'
+            destinations: Array<{ __typename: 'FundingRequestDestination'; amount: string; account: string }>
+          } | null
+        }
+      | { __typename: 'RuntimeUpgradeProposalDetails' }
+      | { __typename: 'SetCouncilBudgetIncrementProposalDetails' }
+      | { __typename: 'SetCouncilorRewardProposalDetails' }
+      | { __typename: 'SetEraPayoutDampingFactorProposalDetails' }
+      | { __typename: 'SetInitialInvitationBalanceProposalDetails' }
+      | { __typename: 'SetInitialInvitationCountProposalDetails' }
+      | { __typename: 'SetMaxValidatorCountProposalDetails' }
+      | { __typename: 'SetMembershipLeadInvitationQuotaProposalDetails' }
+      | { __typename: 'SetMembershipPriceProposalDetails' }
+      | { __typename: 'SetReferralCutProposalDetails' }
+      | { __typename: 'SetWorkingGroupLeadRewardProposalDetails' }
+      | { __typename: 'SignalProposalDetails' }
+      | { __typename: 'SlashWorkingGroupLeadProposalDetails' }
+      | { __typename: 'TerminateWorkingGroupLeadProposalDetails' }
+      | { __typename: 'UpdateArgoBridgeConstraintsProposalDetails' }
+      | { __typename: 'UpdateChannelPayoutsProposalDetails' }
+      | { __typename: 'UpdateGlobalNftLimitProposalDetails' }
+      | { __typename: 'UpdatePalletFrozenStatusProposalDetails' }
+      | { __typename: 'UpdateTokenPalletTokenConstraintsProposalDetails' }
+      | { __typename: 'UpdateWorkingGroupBudgetProposalDetails' }
+      | { __typename: 'VetoProposalDetails' }
   }>
   proposalsRejected: { __typename: 'ProposalDecisionMadeEventConnection'; totalCount: number }
   proposalsSlashed: { __typename: 'ProposalDecisionMadeEventConnection'; totalCount: number }
@@ -1493,6 +1586,7 @@ export const PastCouncilWorkingGroupFieldsFragmentDoc = gql`
   fragment PastCouncilWorkingGroupFields on WorkingGroup {
     id
     name
+    budget
   }
 `
 export const PastCouncilBudgetSetEventFieldsFragmentDoc = gql`
@@ -1512,6 +1606,21 @@ export const PastCouncilNewMissedRewardLevelReachedEventFieldsFragmentDoc = gql`
     groupId
     workerId
     newMissedRewardAmount
+  }
+`
+export const PastCouncilBudgetUpdatedEventFieldsFragmentDoc = gql`
+  fragment PastCouncilBudgetUpdatedEventFields on BudgetUpdatedEvent {
+    groupId
+    budgetChangeAmount
+  }
+`
+export const PastCouncilChannelPaymentMadeEventFieldsFragmentDoc = gql`
+  fragment PastCouncilChannelPaymentMadeEventFields on ChannelPaymentMadeEvent {
+    id
+    amount
+    payer {
+      handle
+    }
   }
 `
 export const CouncilMemberFieldsFragmentDoc = gql`
@@ -1611,6 +1720,7 @@ export const PastElectionRoundFieldsFragmentDoc = gql`
     }
     castVotes {
       voteForId
+      stake
     }
   }
 `
@@ -1671,16 +1781,13 @@ export const CouncilSpendingEventFieldsFragmentDoc = gql`
   }
 `
 export const FundingRequestApprovedFragmentDoc = gql`
-  fragment FundingRequestApproved on ProposalExecutedEvent {
-    proposal {
-      details {
-        __typename
-        ... on FundingRequestProposalDetails {
-          destinationsList {
-            destinations {
-              amount
-              account
-            }
+  fragment FundingRequestApproved on Proposal {
+    details {
+      ... on FundingRequestProposalDetails {
+        destinationsList {
+          destinations {
+            amount
+            account
           }
         }
       }
@@ -1877,11 +1984,11 @@ export const GetPastCouncilDocument = gql`
     budgetSpendingEvents(where: { inBlock_gte: $fromBlock, inBlock_lte: $toBlock }) {
       ...CouncilSpendingEventFields
     }
-    fundingRequestsApproved: proposalExecutedEvents(
+    fundingRequestsApproved: proposals(
       where: {
-        inBlock_gt: $fromBlock
-        inBlock_lt: $toBlock
-        proposal: { details_json: { isTypeOf_eq: "FundingRequestProposalDetails" } }
+        statusSetAtBlock_gt: $fromBlock
+        statusSetAtBlock_lt: $toBlock
+        details_json: { isTypeOf_eq: "FundingRequestProposalDetails" }
       }
     ) {
       ...FundingRequestApproved
@@ -2040,20 +2147,24 @@ export const GetPastCouncilWorkingGroupsDocument = gql`
     workingGroups {
       ...PastCouncilWorkingGroupFields
     }
-    budgetSetEvents(where: { inBlock_lte: $toBlock }, orderBy: [inBlock_DESC]) {
-      ...PastCouncilBudgetSetEventFields
-    }
     rewardPaidEvents(where: { inBlock_gte: $fromBlock, inBlock_lte: $toBlock }) {
       ...PastCouncilRewardPaidEventFields
     }
-    newMissedRewardLevelReachedEvents(where: { inBlock_lte: $toBlock }, orderBy: [inBlock_DESC]) {
+    newMissedRewardLevelReachedEvents(where: { inBlock_gte: $fromBlock, inBlock_lte: $toBlock }) {
       ...PastCouncilNewMissedRewardLevelReachedEventFields
+    }
+    budgetUpdatedEvents(where: { inBlock_gte: $fromBlock, inBlock_lte: $toBlock }) {
+      ...PastCouncilBudgetUpdatedEventFields
+    }
+    channelPaymentMadeEvents(where: { inBlock_gte: $fromBlock, inBlock_lte: $toBlock }) {
+      ...PastCouncilChannelPaymentMadeEventFields
     }
   }
   ${PastCouncilWorkingGroupFieldsFragmentDoc}
-  ${PastCouncilBudgetSetEventFieldsFragmentDoc}
   ${PastCouncilRewardPaidEventFieldsFragmentDoc}
   ${PastCouncilNewMissedRewardLevelReachedEventFieldsFragmentDoc}
+  ${PastCouncilBudgetUpdatedEventFieldsFragmentDoc}
+  ${PastCouncilChannelPaymentMadeEventFieldsFragmentDoc}
 `
 
 /**
@@ -2759,11 +2870,11 @@ export const GetPastCouncilStatsDocument = gql`
     proposalsApproved: proposalExecutedEventsConnection(where: { inBlock_gt: $startBlock, inBlock_lt: $endBlock }) {
       totalCount
     }
-    fundingRequestsApproved: proposalExecutedEvents(
+    fundingRequestsApproved: proposals(
       where: {
-        inBlock_gt: $startBlock
-        inBlock_lt: $endBlock
-        proposal: { details_json: { isTypeOf_eq: "FundingRequestProposalDetails" } }
+        statusSetAtBlock_gt: $startBlock
+        statusSetAtBlock_lt: $endBlock
+        details_json: { isTypeOf_eq: "FundingRequestProposalDetails" }
       }
     ) {
       ...FundingRequestApproved

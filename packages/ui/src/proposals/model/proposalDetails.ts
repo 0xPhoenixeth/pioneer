@@ -22,11 +22,13 @@ export const proposalDetails: ProposalType[] = [
   'setInitialInvitationCount',
   'setMembershipLeadInvitationQuota',
   'setReferralCut',
-  'createBlogPost',
-  'editBlogPost',
-  'lockBlogPost',
-  'unlockBlogPost',
   'veto',
+  'updateChannelPayouts',
+  'updatePalletFrozenStatus',
+  'setEraPayoutDampingFactor',
+  'decreaseCouncilBudget',
+  'updateTokenPalletTokenConstraints',
+  'updateArgoBridgeConstraints',
 ]
 
 export const enabledProposals: ProposalType[] = [
@@ -49,6 +51,12 @@ export const enabledProposals: ProposalType[] = [
   'setReferralCut',
   'setInitialInvitationBalance',
   'setMembershipPrice',
+  'updateChannelPayouts',
+  'updatePalletFrozenStatus',
+  'setEraPayoutDampingFactor',
+  'decreaseCouncilBudget',
+  'updateTokenPalletTokenConstraints',
+  'updateArgoBridgeConstraints',
 ]
 
 export const typenameToProposalDetails = (typename: string): ProposalType => {

@@ -1,7 +1,7 @@
 import BN from 'bn.js'
 
 import { KeysOfUnion } from '@/common/types/helpers'
-import { asBN } from '@/common/utils'
+import { asBN, permillToPercent, whenDefined } from '@/common/utils'
 import { asWorkingGroupName, GroupIdName } from '@/working-groups/types'
 
 import { asMember, Member } from '../../memberships/types'
@@ -39,7 +39,7 @@ export type AmountDetail = {
 export type StakeAmountDetail = {
   stakeAmount: BN
 }
-export type UnstakingPeriodDetail = {
+type UnstakingPeriodDetail = {
   unstakingPeriod: BN
 }
 export type RewardPerBlockDetail = {
@@ -62,6 +62,10 @@ export type CountDetail = {
   count: number
 }
 
+export type BlockDetail = {
+  blocks: number
+}
+
 export type ProposalDetail = {
   proposal?: {
     id: string
@@ -71,6 +75,37 @@ export type ProposalDetail = {
 
 export type OpeningLinkDetail = {
   openingId?: string
+}
+
+export type UpdateChannelPayoutsDetail = {
+  channelCashoutsEnabled?: boolean
+  minCashoutAllowed?: BN
+  maxCashoutAllowed?: BN
+  payloadHash?: string
+  payloadDataObjectId?: string
+}
+export type UpdatePalletFrozenStatusDetail = {
+  freeze?: boolean
+  pallet?: string
+}
+type UpdateTokenPalletTokenConstraintsDetail = {
+  maxYearlyRate?: number
+  minAmmSlope?: BN
+  minSaleDuration?: number
+  minRevenueSplitDuration?: number
+  minRevenueSplitTimeToStart?: number
+  salePlatformFee?: number
+  ammBuyTxFees?: number
+  ammSellTxFees?: number
+  bloatBond?: BN
+}
+
+type UpdateArgoBridgeConstraintsDetail = {
+  operatorAccount?: string
+  pauserAccounts?: string[]
+  bridgingFee?: BN
+  thawnDuration?: number
+  remoteChains?: number[]
 }
 
 export type FundingRequestDetails = ProposalDetailsNew<'fundingRequest', DestinationsDetail>
@@ -130,6 +165,30 @@ export type SetCouncilorRewardDetails = ProposalDetailsNew<'setCouncilorReward',
 
 export type VetoDetails = ProposalDetailsNew<'veto', ProposalDetail>
 
+export type UpdateChannelPayoutsDetails = ProposalDetailsNew<'updateChannelPayouts', UpdateChannelPayoutsDetail>
+
+export type UpdatePalletFrozenStatusProposalDetails = ProposalDetailsNew<
+  'updatePalletFrozenStatus',
+  UpdatePalletFrozenStatusDetail
+>
+
+export type SetEraPayoutDampingFactorProposalDetails = ProposalDetailsNew<
+  'setEraPayoutDampingFactor',
+  { multiplier: number }
+>
+
+export type DecreaseCouncilBudgetDetails = ProposalDetailsNew<'decreaseCouncilBudget', AmountDetail>
+
+export type UpdateTokenPalletTokenConstraintsDetails = ProposalDetailsNew<
+  'updateTokenPalletTokenConstraints',
+  UpdateTokenPalletTokenConstraintsDetail
+>
+
+export type UpdateArgoBridgeConstraintsDetails = ProposalDetailsNew<
+  'updateArgoBridgeConstraints',
+  UpdateArgoBridgeConstraintsDetail
+>
+
 export type ProposalDetails =
   | BaseProposalDetails
   | FundingRequestDetails
@@ -152,8 +211,18 @@ export type ProposalDetails =
   | SetInitialInvitationCountDetails
   | SetCouncilorRewardDetails
   | VetoDetails
+  | UpdateChannelPayoutsDetails
+  | UpdatePalletFrozenStatusProposalDetails
+  | SetEraPayoutDampingFactorProposalDetails
+  | DecreaseCouncilBudgetDetails
+  | UpdateTokenPalletTokenConstraintsDetails
+  | UpdateArgoBridgeConstraintsDetails
 
 export type ProposalDetailsKeys = KeysOfUnion<ProposalDetails>
+
+export interface ProposalExtraDetails {
+  payloadDataObjectId?: string
+}
 
 const asFundingRequest: DetailsCast<'FundingRequestProposalDetails'> = (fragment): FundingRequestDetails => {
   return {
@@ -332,8 +401,64 @@ const asVeto: DetailsCast<'VetoProposalDetails'> = (fragment): VetoDetails => ({
   proposal: fragment.proposal ?? undefined,
 })
 
+const asUpdateChannelPayouts: DetailsCast<'UpdateChannelPayoutsProposalDetails'> = (
+  fragment,
+  extra
+): UpdateChannelPayoutsDetails => ({
+  type: 'updateChannelPayouts',
+  minCashoutAllowed: asBN(fragment.minCashoutAllowed) ?? undefined,
+  maxCashoutAllowed: asBN(fragment.maxCashoutAllowed) ?? undefined,
+  channelCashoutsEnabled: fragment.channelCashoutsEnabled ?? undefined,
+  payloadHash: fragment.payloadHash ?? undefined,
+  payloadDataObjectId: extra?.payloadDataObjectId,
+})
+
+const asUpdatePalletFrozenStatus: DetailsCast<'UpdatePalletFrozenStatusProposalDetails'> = (fragment) => ({
+  type: 'updatePalletFrozenStatus',
+  freeze: fragment.frozen,
+  pallet: fragment.pallet,
+})
+
+const asSetEraPayoutDampingFactor: DetailsCast<'SetEraPayoutDampingFactorProposalDetails'> = (fragment) => ({
+  type: 'setEraPayoutDampingFactor',
+  multiplier: fragment.dampingFactor,
+})
+
+const asDecreaseCouncilBudget: DetailsCast<'DecreaseCouncilBudgetProposalDetails'> = (
+  fragment
+): DecreaseCouncilBudgetDetails => ({
+  type: 'decreaseCouncilBudget',
+  amount: asBN(fragment.amount),
+})
+
+const asUpdateTokenPalletTokenConstraints: DetailsCast<'UpdateTokenPalletTokenConstraintsProposalDetails'> = (
+  fragment
+): UpdateTokenPalletTokenConstraintsDetails => ({
+  type: 'updateTokenPalletTokenConstraints',
+  maxYearlyRate: whenDefined(fragment.maxYearlyRate, permillToPercent),
+  minAmmSlope: whenDefined(fragment.minAmmSlope, asBN),
+  minSaleDuration: fragment.minSaleDuration ?? undefined,
+  minRevenueSplitDuration: fragment.minRevenueSplitDuration ?? undefined,
+  minRevenueSplitTimeToStart: fragment.minRevenueSplitTimeToStart ?? undefined,
+  salePlatformFee: whenDefined(fragment.salePlatformFee, permillToPercent),
+  ammBuyTxFees: whenDefined(fragment.ammBuyTxFees, permillToPercent),
+  ammSellTxFees: whenDefined(fragment.ammSellTxFees, permillToPercent),
+  bloatBond: whenDefined(fragment.bloatBond, asBN),
+})
+
+const asUpdateArgoBridgeConstraints: DetailsCast<'UpdateArgoBridgeConstraintsProposalDetails'> = (
+  fragment
+): UpdateArgoBridgeConstraintsDetails => ({
+  type: 'updateArgoBridgeConstraints',
+  operatorAccount: fragment.operatorAccount ?? undefined,
+  pauserAccounts: fragment.pauserAccounts ?? undefined,
+  bridgingFee: whenDefined(fragment.bridgingFee, asBN),
+  thawnDuration: fragment.thawnDuration ?? undefined,
+  remoteChains: fragment.remoteChains ?? undefined,
+})
+
 interface DetailsCast<T extends ProposalDetailsTypename> {
-  (fragment: DetailsFragment & { __typename: T }): ProposalDetails
+  (fragment: DetailsFragment & { __typename: T }, extra?: ProposalExtraDetails): ProposalDetails
 }
 
 const detailsCasts: Partial<Record<ProposalDetailsTypename, DetailsCast<any>>> = {
@@ -357,10 +482,16 @@ const detailsCasts: Partial<Record<ProposalDetailsTypename, DetailsCast<any>>> =
   SetCouncilorRewardProposalDetails: asSetCouncilorReward,
   VetoProposalDetails: asVeto,
   SetMembershipLeadInvitationQuotaProposalDetails: asSetMembershipLeadInvitationQuota,
+  UpdateChannelPayoutsProposalDetails: asUpdateChannelPayouts,
+  UpdatePalletFrozenStatusProposalDetails: asUpdatePalletFrozenStatus,
+  SetEraPayoutDampingFactorProposalDetails: asSetEraPayoutDampingFactor,
+  DecreaseCouncilBudgetProposalDetails: asDecreaseCouncilBudget,
+  UpdateTokenPalletTokenConstraintsProposalDetails: asUpdateTokenPalletTokenConstraints,
+  UpdateArgoBridgeConstraintsProposalDetails: asUpdateArgoBridgeConstraints,
 }
 
-export const asProposalDetails = (fragment: DetailsFragment): ProposalDetails => {
+export const asProposalDetails = (fragment: DetailsFragment, extra?: ProposalExtraDetails): ProposalDetails => {
   const type = fragment.__typename as ProposalDetailsTypename
-  const result = detailsCasts[type]?.(fragment)
+  const result = detailsCasts[type]?.(fragment, extra)
   return result ?? { type: undefined }
 }

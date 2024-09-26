@@ -2,12 +2,11 @@ import { Meta, Story } from '@storybook/react'
 import React from 'react'
 import styled from 'styled-components'
 
-import { PostReaction } from '@/common/api/queries'
 import { TemplateBlock } from '@/common/components/storybookParts/previewStyles'
 import { A_MINUTE } from '@/common/constants'
 import { repeat } from '@/common/utils'
 import { PostListItem } from '@/forum/components/PostList/PostListItem'
-import { ForumPost } from '@/forum/types'
+import { ForumPost, PostReaction } from '@/forum/types'
 import { MembershipContext } from '@/memberships/providers/membership/context'
 import { MockApolloProvider } from '@/mocks/components/storybook/MockApolloProvider'
 import { forumPostMock } from '@/mocks/data/commonMocks'
@@ -99,8 +98,8 @@ Exercitation veniam consequat sunt nostrud amet.`,
     moderator: {
       id: '0',
       name: 'Alice member',
-      rootAccount: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
-      controllerAccount: '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
+      rootAccount: 'j4W7rVcUCxi2crhhjRq46fNDRbVHTjJrz6bKxZwehEMQxZeSf',
+      controllerAccount: 'j4W7rVcUCxi2crhhjRq46fNDRbVHTjJrz6bKxZwehEMQxZeSf',
       handle: 'alice',
       isVerified: false,
       isFoundingMember: false,

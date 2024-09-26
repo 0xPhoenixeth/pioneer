@@ -44,6 +44,15 @@ export type AddNewProposalState =
   | { value: 'generalParameters.finishGeneralParameters'; context: Required<TriggerAndDiscussionContext> }
   | { value: 'specificParameters'; context: Required<TriggerAndDiscussionContext> }
   | { value: { specificParameters: 'signal' }; context: Required<TriggerAndDiscussionContext> }
+  | { value: { specificParameters: 'updateChannelPayouts' }; context: Required<TriggerAndDiscussionContext> }
+  | { value: { specificParameters: 'updatePalletFrozenStatus' }; context: Required<TriggerAndDiscussionContext> }
+  | { value: { specificParameters: 'setEraPayoutDampingFactor' }; context: Required<TriggerAndDiscussionContext> }
+  | { value: { specificParameters: 'decreaseCouncilBudget' }; context: Required<TriggerAndDiscussionContext> }
+  | {
+      value: { specificParameters: 'updateTokenPalletTokenConstraints' }
+      context: Required<TriggerAndDiscussionContext>
+    }
+  | { value: { specificParameters: 'updateArgoBridgeConstraints' }; context: Required<TriggerAndDiscussionContext> }
   | { value: { specificParameters: 'fundingRequest' }; context: Required<TriggerAndDiscussionContext> }
   | { value: { specificParameters: 'runtimeUpgrade' }; context: Required<TriggerAndDiscussionContext> }
   | { value: { specificParameters: 'setReferralCut' }; context: Required<TriggerAndDiscussionContext> }
@@ -216,8 +225,20 @@ export const addNewProposalMachine = createMachine<
             { target: 'setInitialInvitationBalance', cond: isType('setInitialInvitationBalance') },
             { target: 'setMembershipPrice', cond: isType('setMembershipPrice') },
             { target: 'setInitialInvitationCount', cond: isType('setInitialInvitationCount') },
+            { target: 'updateChannelPayouts', cond: isType('updateChannelPayouts') },
+            { target: 'updatePalletFrozenStatus', cond: isType('updatePalletFrozenStatus') },
+            { target: 'setEraPayoutDampingFactor', cond: isType('setEraPayoutDampingFactor') },
+            { target: 'decreaseCouncilBudget', cond: isType('decreaseCouncilBudget') },
+            { target: 'updateTokenPalletTokenConstraints', cond: isType('updateTokenPalletTokenConstraints') },
+            { target: 'updateArgoBridgeConstraints', cond: isType('updateArgoBridgeConstraints') },
           ],
         },
+        updateChannelPayouts: {},
+        updatePalletFrozenStatus: {},
+        setEraPayoutDampingFactor: {},
+        decreaseCouncilBudget: {},
+        updateTokenPalletTokenConstraints: {},
+        updateArgoBridgeConstraints: {},
         signal: {},
         setMaxValidatorCount: {},
         setReferralCut: {},
